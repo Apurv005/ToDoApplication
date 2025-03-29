@@ -32,6 +32,11 @@ class TaskViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)  # Save task with logged-in user
 
+    def perform_destroy(self, instance):
+        # Additional logic before deletion (e.g., check if the task belongs to the authenticated user)
+        if instance.user != self.request.user:
+            raise PermissionDenied("You cannot delete this task.")
+        instance.delete()
 
 
 class TaskUpdateView(UpdateAPIView):
