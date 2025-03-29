@@ -4,6 +4,6 @@ urlpatterns = [
     path('register/', register, name='register'),
     path('login/', login, name='login'),
     path('logout/', logout, name='logout'),
-path("verify-token/", VerifyTokenView.as_view(), name="verify-token"),
+path('verify-token/', VerifyTokenView.as_view(), name='verify-token'),
 
 ]
