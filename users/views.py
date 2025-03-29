@@ -1,10 +1,12 @@
-from rest_framework.response import Response
-from rest_framework.decorators import api_view
-from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
-from rest_framework.views import APIView
+
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.decorators import api_view, permission_classes
 
 
 @api_view(['POST'])
@@ -21,16 +23,26 @@ def register(request):
 @api_view(['POST'])
 def login(request):
     """User login and JWT token generation"""
-    data = request.data
-    user = authenticate(username=data['username'], password=data['password'])
+    username = request.data.get('username')
+    password = request.data.get('password')
 
-    if user:
-        refresh = RefreshToken.for_user(user)
-        return Response({
-            'access': str(refresh.access_token),
-            'refresh': str(refresh)
-        })
-    return Response({'error': 'Invalid credentials'}, status=400)
+    try:
+        print(username, password)
+        # Authenticate the user
+        user = User.objects.get(username=username)
+        if user.check_password(password):
+            # If credentials are correct, generate tokens
+            refresh = RefreshToken.for_user(user)
+            access_token = str(refresh.access_token)
+
+            return Response({
+                'access': access_token,
+                'refresh': str(refresh),
+            }, status=status.HTTP_200_OK)
+        else:
+            return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+    except User.DoesNotExist:
+        return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
 
 
 @api_view(['POST'])
@@ -45,7 +57,10 @@ def logout(request):
         return Response({'error': 'Invalid token'}, status=400)
 
 class VerifyTokenView(APIView):
+    print("hello 60")
     permission_classes = [IsAuthenticated]
+    print("hello 61")
 
     def get(self, request):
-        return Response({"message": "Token is valid"}, status=200)
+        # If the request is authenticated, return a success message
+        return Response({"message": "Token is valid"}, status=status.HTTP_200_OK)
