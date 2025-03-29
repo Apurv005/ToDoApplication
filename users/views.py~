@@ -57,7 +57,9 @@ def logout(request):
         return Response({'error': 'Invalid token'}, status=400)
 
 class VerifyTokenView(APIView):
+    print("hello 60")
     permission_classes = [IsAuthenticated]
+    print("hello 61")
 
     def get(self, request):
         # If the request is authenticated, return a success message

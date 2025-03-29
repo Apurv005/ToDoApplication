@@ -38,6 +38,7 @@ def login(request):
             return Response({
                 'access': access_token,
                 'refresh': str(refresh),
+                'username': user.username
             }, status=status.HTTP_200_OK)
         else:
             return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
