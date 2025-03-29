@@ -26,3 +26,9 @@ class TaskViewSet(viewsets.ModelViewSet):
         task.status = not task.status  # Toggle status
         task.save()
         return Response({'status': task.status})
+
+    def get_queryset(self):
+        return Task.objects.filter(user=self.request.user)  # Show only logged-in user's tasks
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)  # Save task with logged-in user

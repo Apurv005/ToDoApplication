@@ -11,12 +11,6 @@ class TaskViewSet(viewsets.ModelViewSet):
 
     permission_classes = [IsAuthenticated]  # Ensure the user is authenticated
 
-    def get_queryset(self):
-        """
-        Limit the tasks to only those belonging to the authenticated user
-        """
-        return Task.objects.filter(user=self.request.user)
-
     @action(detail=True, methods=['put'])
     def update_status(self, request, pk=None):
         """
@@ -27,9 +21,8 @@ class TaskViewSet(viewsets.ModelViewSet):
         task.save()
         return Response({'status': task.status})
 
-    def perform_create(self, serializer):
-        """
-        Override the perform_create method to automatically associate the task with the logged-in user
-        """
-        serializer.save(user=self.request.user)
+    def get_queryset(self):
+        return Task.objects.filter(user=self.request.user)  # Show only logged-in user's tasks
 
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)  # Save task with logged-in user
