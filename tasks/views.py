@@ -1,9 +1,14 @@
 from rest_framework import status, viewsets
+from rest_framework.exceptions import PermissionDenied
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from .models import Task
 from .serializers import TaskSerializer
+from rest_framework.generics import UpdateAPIView
+
+
+
 
 class TaskViewSet(viewsets.ModelViewSet):
     queryset = Task.objects.all()
@@ -26,3 +31,17 @@ class TaskViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)  # Save task with logged-in user
+
+
+
+class TaskUpdateView(UpdateAPIView):
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        # Ensure the task belongs to the currently logged-in user
+        task = super().get_object()
+        if task.user != self.request.user:
+            raise PermissionDenied("You do not have permission to edit this task")
+        return task
