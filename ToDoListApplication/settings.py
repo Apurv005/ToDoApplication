@@ -99,9 +99,12 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'neondb',
         'USER': 'neondb_owner',
-        'PASSWORD': 'npg_Rof9GEMS0NHc',
-        'HOST': 'ep-shy-glitter-a79xk2wi-pooler.ap-southeast-2.aws.neon.tech',
+        'PASSWORD': 'npg_PHaZWf6Yovw2',
+        'HOST': 'ep-white-feather-a77wnbh4-pooler.ap-southeast-2.aws.neon.tech',
         'PORT': 5432,
+        'TEST': {
+            'NAME': 'test_db',  # Change this to a new test database name
+        },
     }
 }
 

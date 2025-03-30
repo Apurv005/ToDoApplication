@@ -32,4 +32,4 @@ jobs:
 
     - name: Run tests
       run: |
-        python manage.py test  # Run tests to ensure everything is working
+        python manage.py test --keepdb  # Run tests to ensure everything is working

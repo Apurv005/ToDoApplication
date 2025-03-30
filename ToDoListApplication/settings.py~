@@ -61,7 +61,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 #     "http://localhost:3000",  # React frontend
 #     "http://127.0.0.1:3000",  # React frontend (alternative)
 # ]
-    
+
 ROOT_URLCONF = 'ToDoListApplication.urls'
 
 TEMPLATES = [
@@ -99,8 +99,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'neondb',
         'USER': 'neondb_owner',
-        'PASSWORD': 'npg_Rof9GEMS0NHc',
-        'HOST': 'ep-shy-glitter-a79xk2wi-pooler.ap-southeast-2.aws.neon.tech',
+        'PASSWORD': 'npg_PHaZWf6Yovw2',
+        'HOST': 'ep-white-feather-a77wnbh4-pooler.ap-southeast-2.aws.neon.tech',
         'PORT': 5432,
     }
 }
