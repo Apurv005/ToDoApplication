@@ -33,8 +33,3 @@ jobs:
     - name: Run tests
       run: |
         python manage.py test  # Run tests to ensure everything is working
-
-    - name: Lint the code (optional, but recommended)
-      run: |
-        pip install pylint
-        pylint your_project_name  # Replace with the actual project name
