@@ -1,0 +1,40 @@
+name: Django CICD
+
+on:
+  push:
+    branches:
+      - main  # You can change this to the branch you want to track
+  pull_request:
+    branches:
+      - main  # Also track pull requests to the main branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out the code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9  # You can use any compatible Python version
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Set up the database (SQLite is default)
+      run: |
+        python manage.py migrate  # Run migrations to set up the SQLite database
+
+    - name: Run tests
+      run: |
+        python manage.py test  # Run tests to ensure everything is working
+
+    - name: Lint the code (optional, but recommended)
+      run: |
+        pip install pylint
+        pylint your_project_name  # Replace with the actual project name
